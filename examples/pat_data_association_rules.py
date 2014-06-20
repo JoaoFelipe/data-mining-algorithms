@@ -2,6 +2,9 @@
 import sys
 sys.path.append("..")
 
+import re
+pattern = re.compile(r'\s+')
+
 from data_mining.association_rule.base import rules, lift, support
 from data_mining.association_rule.apriori import apriori
 from data_mining.association_rule.liftmin import apriorilift
@@ -9,13 +12,14 @@ from data_mining.association_rule.liftmin import apriorilift
 
 def load_data(fil):
     with open(fil, 'r') as f:
-        reading = False
         result = []
         for line in f:
-            if reading and line:
-                result.append([x for x in line.strip().split(' ')[4:] if x])
-            if 'ItemSets:' in line:
-                reading = True
+            line = re.sub(pattern, ' ', line).strip().split(' ')
+            tid = int(line[0]) - 1
+            if tid >= len(result):
+                result.append([])
+            result[tid].append(line[-1])
+            
     return result
 
 
@@ -47,11 +51,13 @@ def mine_rules(data, fn, mini, conf):
         ))
         i += 1
 
-
-if __name__ == "__main__":
-    data = load_data("t1.pat")
+def compare(data, supmin, liftmin, confmin):
     print 'apriori'
-    mine_rules(data, apriori, 0.01, 0)
+    mine_rules(data, apriori, supmin, confmin)
     print "----------------"
     print 'apriorilift'
-    mine_rules(data, apriorilift, 5.0, 0)
+    mine_rules(data, apriorilift, liftmin, confmin)
+
+if __name__ == "__main__":
+    data = load_data("t1.data")
+    compare(data, 0.000000001, 5.0, 0)

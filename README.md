@@ -20,3 +20,7 @@ Classifier Evaluations:
 - k-fold cross validation
 - stratified cross validation
 - leave-one-out
+
+Association Rules:
+- Apriori
+- Apriori-lift

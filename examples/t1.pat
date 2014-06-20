@@ -1,5 +1,5 @@
 Number of transactions in database = 1000
-Average transaction length = 10
+Average transaction length = 4
 Number of items = 1000
 Large Itemsets:
 	Number of patterns = 10000
