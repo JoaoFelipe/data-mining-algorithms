@@ -21,6 +21,24 @@ def conf(sequences, x, y):
     return count_xUy / count_x
 
 
+def lift(sequences, x, y):
+    union = set(x).union(y)
+    x = set(x)
+    y = set(y)
+
+    count_xUy = 0.0
+    count_x = 0.0
+    count_y = 0.0
+    for s in sequences:
+        if len(union.intersection(s)) == len(union):
+            count_xUy += 1.0
+        if len(x.intersection(s)) == len(x):
+            count_x += 1.0
+        if len(y.intersection(s)) == len(y):
+            count_y += 1.0
+    return float(len(sequences)) * count_xUy / (count_x * count_y)
+
+
 def rules(sequences, frequents, min_conf=0.6):
     result = {}
     for frequent in frequents:
@@ -33,3 +51,4 @@ def rules(sequences, frequents, min_conf=0.6):
                 if cf >= min_conf:
                     result[(x, y)] = cf
     return result
+
